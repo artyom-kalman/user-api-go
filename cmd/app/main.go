@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/artyom-kalman/user-api-go/config"
+	"github.com/artyom-kalman/user-api-go/pkg/db"
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
@@ -11,6 +12,18 @@ func main() {
 	err := config.LoadConfig()
 	if err != nil {
 		logger.Error("Failed to load config: %v", err)
+		return
+	}
+
+	dbConfig, err := config.GetDBConfig()
+	if err != nil {
+		logger.Error("failed to get db config: %v", err)
+		return
+	}
+
+	err = db.ConnectToDatabase(dbConfig)
+	if err != nil {
+		logger.Error("failed to connect to database: %v", err)
 		return
 	}
 

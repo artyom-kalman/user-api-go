@@ -25,7 +25,7 @@ func LoadConfig() error {
 func GetEnv(key string) (string, error) {
 	value := os.Getenv(key)
 	if value == "" {
-		return "", fmt.Errorf("environment variable %s not set", key)
+		return "", fmt.Errorf("environment variable %s not found", key)
 	}
 	return value, nil
 }
