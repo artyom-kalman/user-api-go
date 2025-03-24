@@ -16,7 +16,7 @@ var (
 	retryDelay = 2 * time.Second
 )
 
-func ConnectToDatabase(config *config.DBConfig) error {
+func Connect(config *config.DBConfig) error {
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		config.Host, config.Port, config.User, config.Password, config.DBName,
 	)
@@ -32,7 +32,7 @@ func ConnectToDatabase(config *config.DBConfig) error {
 			time.Sleep(retryDelay)
 			continue
 		}
-		databaseConnection = &Database{db}
+		openedConn = &Database{db}
 		break
 	}
 
@@ -46,12 +46,12 @@ func ConnectToDatabase(config *config.DBConfig) error {
 	return nil
 }
 
-func CloseDatabaseConnection() {
-	if databaseConnection == nil {
+func Close() {
+	if openedConn == nil {
 		return
 	}
 
-	databaseConnection.conn.Close()
+	openedConn.conn.Close()
 
 	logger.Info("Closed database connection")
 }

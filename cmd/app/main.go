@@ -21,9 +21,16 @@ func main() {
 		return
 	}
 
-	err = db.ConnectToDatabase(dbConfig)
+	err = db.Connect(dbConfig)
 	if err != nil {
 		logger.Error("failed to connect to database: %v", err)
+		return
+	}
+	defer db.Close()
+
+	err = db.RunMigration()
+	if err != nil {
+		logger.Error("failed to migrate database: %v", err)
 		return
 	}
 

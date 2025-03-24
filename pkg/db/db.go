@@ -10,13 +10,13 @@ type Database struct {
 	conn *sql.DB
 }
 
-var databaseConnection *Database
+var openedConn *Database
 
 func GetDatabase() *Database {
-	if databaseConnection == nil {
+	if openedConn == nil {
 		databaseConfig, _ := config.GetDBConfig()
-		ConnectToDatabase(databaseConfig)
+		Connect(databaseConfig)
 	}
 
-	return databaseConnection
+	return openedConn
 }
