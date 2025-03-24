@@ -33,7 +33,7 @@ func GetDBConfig() (*DBConfig, error) {
 		return nil, err
 	}
 
-	dbName, err := GetEnv("POSTGRES_NAME")
+	dbName, err := GetEnv("POSTGRES_DB")
 	if err != nil {
 		return nil, err
 	}
