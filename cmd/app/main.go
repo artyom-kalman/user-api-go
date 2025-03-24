@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/artyom-kalman/user-api-go/config"
+	"github.com/artyom-kalman/user-api-go/internal/app/handlers"
 	"github.com/artyom-kalman/user-api-go/pkg/db"
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
@@ -39,6 +40,8 @@ func main() {
 		logger.Error("Failed to get PORT environment variable: %v", err)
 		return
 	}
+
+	http.HandleFunc("/users", handlers.HandleUsers)
 
 	logger.Info("Starting server on port :%s", port)
 	err = http.ListenAndServe(":"+port, nil)
