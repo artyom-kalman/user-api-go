@@ -1,31 +1,39 @@
 package repository
 
-// func TestGetByID(t *testing.T) {
-// 	dbMock, mock, err := sqlmock.New()
-// 	assert.NoError(t, err)
+import (
+	"database/sql"
+	"testing"
 
-// 	repo := NewUserRepository(db)
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/stretchr/testify/assert"
+)
 
-// 	t.Run("success", func(t *testing.T) {
-// 		rows := sqlmock.NewRows([]string{"id", "name", "email"}).
-// 			AddRow(1, "John Doe", "john@example.com")
+func TestGetByID(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
 
-// 		mock.ExpectQuery("SELECT id, name, email FROM users WHERE id = ?").
-// 			WithArgs(1).
-// 			WillReturnRows(rows)
+	repo := NewUserRepository(db)
 
-// 		user, err := repo.GetByID(1)
-// 		assert.NoError(t, err)
-// 		assert.Equal(t, &domain.User{ID: 1, Name: "John Doe", Email: "john@example.com"}, user)
-// 	})
+	t.Run("success", func(t *testing.T) {
+		rows := sqlmock.NewRows([]string{"id", "name", "email"}).
+			AddRow(1, "John Doe", "john@example.com")
 
-// 	t.Run("not found", func(t *testing.T) {
-// 		mock.ExpectQuery("SELECT id, name, email FROM users WHERE id = ?").
-// 			WithArgs(2).
-// 			WillReturnError(sql.ErrNoRows)
+		mock.ExpectQuery("SELECT id, name, email FROM users WHERE id = ?").
+			WithArgs(1).
+			WillReturnRows(rows)
 
-// 		user, err := repo.GetByID(2)
-// 		assert.Error(t, err)
-// 		assert.Nil(t, user)
-// 	})
-// }
+		user, err := repo.GetByID(1)
+		assert.NoError(t, err)
+		assert.Equal(t, &domain.User{ID: 1, Name: "John Doe", Email: "john@example.com"}, user)
+	})
+
+	t.Run("not found", func(t *testing.T) {
+		mock.ExpectQuery("SELECT id, name, email FROM users WHERE id = ?").
+			WithArgs(2).
+			WillReturnError(sql.ErrNoRows)
+
+		user, err := repo.GetByID(2)
+		assert.Error(t, err)
+		assert.Nil(t, user)
+	})
+}

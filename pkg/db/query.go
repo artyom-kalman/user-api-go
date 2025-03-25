@@ -5,7 +5,7 @@ import (
 	"database/sql"
 )
 
-func (db *Database) Query(ctx context.Context, query string) (*sql.Rows, error) {
+func (db *Database) QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
 	err := db.conn.PingContext(ctx)
 	if err != nil {
 		return nil, err
@@ -14,5 +14,5 @@ func (db *Database) Query(ctx context.Context, query string) (*sql.Rows, error) 
 	if ctx == nil {
 		ctx = context.Background()
 	}
-	return db.conn.QueryContext(ctx, query)
+	return db.conn.QueryContext(ctx, query, args...)
 }

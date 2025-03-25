@@ -12,7 +12,7 @@ func (r *UserRepository) Delete(u *users.User, ctx context.Context) error {
 	query := fmt.Sprintf("DELETE FROM users WHERE id = %d", u.ID)
 	logger.Debug("Executing query: %s", query)
 
-	if _, err := r.conn.Query(ctx, query); err != nil {
+	if _, err := r.conn.QueryContext(ctx, query); err != nil {
 		logger.Error("error deleting user with id = %d: %v", u.ID, err)
 		return err
 	}

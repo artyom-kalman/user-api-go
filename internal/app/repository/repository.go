@@ -6,7 +6,7 @@ import (
 )
 
 type database interface {
-	Query(ctx context.Context, query string) (*sql.Rows, error)
+	QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error)
 }
 
 type UserRepository struct {
