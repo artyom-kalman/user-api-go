@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/artyom-kalman/user-api-go/internal/app"
+	"github.com/artyom-kalman/user-api-go/internal/app/users"
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
@@ -16,11 +16,11 @@ func HandleDeleteUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User ID is required", http.StatusBadRequest)
 		return
 	}
-	logger.Info("Deleting user with ID", "id", userId)
+	logger.Info("Deleting user with ID = %s", userId)
 
-	user, err := app.GetUserById(r.Context(), userId)
+	user, err := users.GetUserById(r.Context(), userId)
 	if err != nil {
-		if err == app.ErrUserNotFound {
+		if err == users.ErrUserNotFound {
 			logger.Info("User with id = %s", userId)
 			http.Error(w, "User not found", http.StatusNotFound)
 		} else {

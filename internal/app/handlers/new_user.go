@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/artyom-kalman/user-api-go/internal/app"
+	"github.com/artyom-kalman/user-api-go/internal/app/users"
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
 func HandleNewUser(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Received newUser request")
 
-	var user app.User
+	var user users.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		logger.Error("error reading request body: %v", err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
