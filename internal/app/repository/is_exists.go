@@ -2,9 +2,9 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/artyom-kalman/user-api-go/internal/app/users"
+	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
 func (r *UserRepository) isExists(u *users.User, ctx context.Context) bool {
@@ -12,16 +12,23 @@ func (r *UserRepository) isExists(u *users.User, ctx context.Context) bool {
 		ctx = context.Background()
 	}
 
-	query := fmt.Sprintf("SELECT COUNT(*) FROM users WHERE id = %d", u.ID)
-	rows, err := r.conn.QueryContext(ctx, query)
+	query := "SELECT COUNT() FROM users WHERE id = $1"
+	logger.Debug("Executing query: %s with value %d", query, u.ID)
+
+	rows, err := r.conn.QueryContext(ctx, query, u.ID)
+	defer rows.Close()
 	if err != nil || !rows.Next() {
+		if err != nil {
+			logger.Error("Error executing query: %s", err.Error())
+		}
+		logger.Debug("exit")
 		return false
 	}
-	defer rows.Close()
 
 	var count int
 	err = rows.Scan(&count)
 	if err != nil {
+		logger.Error("Error scanning result: %s", err.Error())
 		return false
 	}
 

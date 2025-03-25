@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/artyom-kalman/user-api-go/internal/app/users"
+	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
 func (r *UserRepository) Update(u *users.User, ctx context.Context) error {
@@ -34,8 +35,10 @@ func (r *UserRepository) updateEmail(u *users.User, ctx context.Context) error {
 		ctx = context.Background()
 	}
 
-	query := fmt.Sprintf("UPDATE users SET email = '%s' WHERE id = %d", u.Email, u.ID)
-	_, err := r.conn.QueryContext(ctx, query)
+	query := "UPDATE users SET email = $1 WHERE id = $2"
+	logger.Debug("Executing query: %s with values %s %d", query, u.Email, u.ID)
+
+	_, err := r.conn.QueryContext(ctx, query, u.Email, u.ID)
 	if err != nil {
 		return fmt.Errorf("error updating user email: %v", err)
 	}
@@ -48,8 +51,10 @@ func (r *UserRepository) updatePassword(u *users.User, ctx context.Context) erro
 		ctx = context.Background()
 	}
 
-	query := fmt.Sprintf("UPDATE users SET password = '%s' WHERE id = %d", u.Password, u.ID)
-	_, err := r.conn.QueryContext(ctx, query)
+	query := "UPDATE users SET password = $1 WHERE id = $2"
+	logger.Debug("Executing query: %s with values %s %d", query, u.Password, u.ID)
+
+	_, err := r.conn.QueryContext(ctx, query, u.Password, u.ID)
 	if err != nil {
 		return fmt.Errorf("error updating user password: %v", err)
 	}
