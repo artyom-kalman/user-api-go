@@ -8,7 +8,7 @@ import (
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
-func HandleNewUser(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) handleNewUser(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Received newUser request")
 
 	var user users.User
@@ -25,7 +25,7 @@ func HandleNewUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := user.Save(r.Context()); err != nil {
+	if err := h.repo.Save(&user, r.Context()); err != nil {
 		logger.Error("error saving user: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

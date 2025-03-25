@@ -37,14 +37,15 @@ func Start() error {
 	}
 
 	userRepo := repository.NewUserRepository(db.GetDatabase())
+	handler := handlers.NewUserHandler(userRepo)
+
+	http.HandleFunc("/users", handler.HandleUsers)
 
 	port, err := config.GetEnv("PORT")
 	if err != nil {
 		logger.Error("error getting PORT environment variable: %v", err)
 		return err
 	}
-
-	http.HandleFunc("/users", handlers.HandleUsers)
 
 	logger.Info("Starting server on port :%s", port)
 

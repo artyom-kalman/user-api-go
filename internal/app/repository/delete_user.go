@@ -8,7 +8,7 @@ import (
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
-func (r *userRepository) Delete(u *users.User, ctx context.Context) error {
+func (r *UserRepository) Delete(u *users.User, ctx context.Context) error {
 	query := fmt.Sprintf("DELETE FROM users WHERE id = %d", u.ID)
 	logger.Debug("Executing query: %s", query)
 

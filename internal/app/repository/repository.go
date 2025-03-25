@@ -4,12 +4,12 @@ import (
 	"github.com/artyom-kalman/user-api-go/pkg/db"
 )
 
-type userRepository struct {
+type UserRepository struct {
 	db *db.Database
 }
 
-func NewUserRepository(db *db.Database) *userRepository {
-	return &userRepository{
+func NewUserRepository(db *db.Database) *UserRepository {
+	return &UserRepository{
 		db: db,
 	}
 }

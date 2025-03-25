@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/artyom-kalman/user-api-go/internal/app/users"
+	"github.com/artyom-kalman/user-api-go/internal/app/repository"
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
-func HandleGetUser(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) handleGetUser(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Request getUser request")
 
 	var userID = r.URL.Query().Get("id")
@@ -19,9 +19,9 @@ func HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	}
 	logger.Debug("Received user ID: %s", userID)
 
-	user, err := users.GetUserById(r.Context(), userID)
+	user, err := h.repo.GetUserById(userID, r.Context())
 	if err != nil {
-		if err == users.ErrUserNotFound {
+		if err == repository.ErrUserNotFound {
 			logger.Error("User not found")
 			http.Error(w, "User not found", http.StatusNotFound)
 		} else {

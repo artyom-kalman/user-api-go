@@ -7,7 +7,7 @@ import (
 	"github.com/artyom-kalman/user-api-go/internal/app/users"
 )
 
-func (r *userRepository) Save(u *users.User, ctx context.Context) error {
+func (r *UserRepository) Save(u *users.User, ctx context.Context) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}

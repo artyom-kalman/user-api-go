@@ -11,7 +11,7 @@ import (
 
 var ErrUserNotFound = errors.New("user not found")
 
-func (r *userRepository) GetUserById(id string, ctx context.Context) (*users.User, error) {
+func (r *UserRepository) GetUserById(id string, ctx context.Context) (*users.User, error) {
 	if id == "" {
 		return nil, errors.New("User ID is required")
 	}

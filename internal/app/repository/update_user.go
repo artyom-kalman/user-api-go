@@ -7,7 +7,7 @@ import (
 	"github.com/artyom-kalman/user-api-go/internal/app/users"
 )
 
-func (r *userRepository) Update(u *users.User, ctx context.Context) error {
+func (r *UserRepository) Update(u *users.User, ctx context.Context) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -29,7 +29,7 @@ func (r *userRepository) Update(u *users.User, ctx context.Context) error {
 	return nil
 }
 
-func (r *userRepository) updateEmail(u *users.User, ctx context.Context) error {
+func (r *UserRepository) updateEmail(u *users.User, ctx context.Context) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -43,7 +43,7 @@ func (r *userRepository) updateEmail(u *users.User, ctx context.Context) error {
 	return nil
 }
 
-func (r *userRepository) updatePassword(u *users.User, ctx context.Context) error {
+func (r *UserRepository) updatePassword(u *users.User, ctx context.Context) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}

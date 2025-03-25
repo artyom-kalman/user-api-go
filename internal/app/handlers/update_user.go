@@ -8,7 +8,7 @@ import (
 	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
-func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) handleUpdateUser(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Received request to update user")
 
 	var newUserData users.User
@@ -19,7 +19,7 @@ func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	logger.Debug("Received user data: %+v", newUserData)
 
-	if err := newUserData.Update(r.Context()); err != nil {
+	if err := h.repo.Update(&newUserData, r.Context()); err != nil {
 		logger.Error("error updating user data: %v", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
