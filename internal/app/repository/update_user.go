@@ -1,26 +1,26 @@
-package users
+package repository
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/artyom-kalman/user-api-go/pkg/db"
+	"github.com/artyom-kalman/user-api-go/internal/app/users"
 )
 
-func (u *User) Update(ctx context.Context) error {
+func (r *userRepository) Update(u *users.User, ctx context.Context) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}
 
 	if u.Email != "" {
-		err := u.updateEmail(ctx)
+		err := r.updateEmail(u, ctx)
 		if err != nil {
 			return fmt.Errorf("error updating user email: %v", err)
 		}
 	}
 
 	if u.Password != "" {
-		err := u.updatePassword(ctx)
+		err := r.updatePassword(u, ctx)
 		if err != nil {
 			return fmt.Errorf("error updating user password: %v", err)
 		}
@@ -29,15 +29,13 @@ func (u *User) Update(ctx context.Context) error {
 	return nil
 }
 
-func (u *User) updateEmail(ctx context.Context) error {
+func (r *userRepository) updateEmail(u *users.User, ctx context.Context) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}
 
-	db := db.GetDatabase()
-
 	query := fmt.Sprintf("UPDATE users SET email = '%s' WHERE id = %d", u.Email, u.ID)
-	_, err := db.Query(ctx, query)
+	_, err := r.db.Query(ctx, query)
 	if err != nil {
 		return fmt.Errorf("error updating user email: %v", err)
 	}
@@ -45,15 +43,13 @@ func (u *User) updateEmail(ctx context.Context) error {
 	return nil
 }
 
-func (u *User) updatePassword(ctx context.Context) error {
+func (r *userRepository) updatePassword(u *users.User, ctx context.Context) error {
 	if ctx == nil {
 		ctx = context.Background()
 	}
 
-	db := db.GetDatabase()
-
 	query := fmt.Sprintf("UPDATE users SET password = '%s' WHERE id = %d", u.Password, u.ID)
-	_, err := db.Query(ctx, query)
+	_, err := r.db.Query(ctx, query)
 	if err != nil {
 		return fmt.Errorf("error updating user password: %v", err)
 	}
