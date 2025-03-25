@@ -20,10 +20,10 @@ func (r *UserRepository) GetUserById(id string, ctx context.Context) (*users.Use
 		ctx = context.Background()
 	}
 
-	query := fmt.Sprintf("SELECT id, email, password FROM users WHERE id = %s", id)
-	logger.Debug("Executing query: %s", query)
+	query := "SELECT id, email, password FROM users WHERE id = $1"
+	logger.Debug("Executing query: %s with value %s", query, id)
 
-	rows, err := r.conn.QueryContext(ctx, query)
+	rows, err := r.conn.QueryContext(ctx, query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error finding user with id = %s: %v", id, err)
 	}
