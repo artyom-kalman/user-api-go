@@ -20,6 +20,7 @@ func (r *UserRepository) Save(u *users.User, ctx context.Context) error {
 	if err != nil || !rows.Next() {
 		return fmt.Errorf("error inserting new user: %v", err)
 	}
+	defer rows.Close()
 
 	err = rows.Scan(&u.ID)
 	if err != nil {
