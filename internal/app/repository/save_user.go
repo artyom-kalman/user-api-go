@@ -13,7 +13,7 @@ func (r *UserRepository) Save(u *users.User, ctx context.Context) error {
 	}
 
 	query := fmt.Sprintf("INSERT INTO users (email, password) VALUES ('%s', '%s') RETURNING id", u.Email, u.Password)
-	rows, err := r.db.Query(ctx, query)
+	rows, err := r.conn.Query(ctx, query)
 	if err != nil || !rows.Next() {
 		return fmt.Errorf("error inserting new user: %v", err)
 	}

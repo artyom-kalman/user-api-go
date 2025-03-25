@@ -1,15 +1,20 @@
 package repository
 
 import (
-	"github.com/artyom-kalman/user-api-go/pkg/db"
+	"context"
+	"database/sql"
 )
 
-type UserRepository struct {
-	db *db.Database
+type database interface {
+	Query(ctx context.Context, query string) (*sql.Rows, error)
 }
 
-func NewUserRepository(db *db.Database) *UserRepository {
+type UserRepository struct {
+	conn database
+}
+
+func NewUserRepository(conn database) *UserRepository {
 	return &UserRepository{
-		db: db,
+		conn: conn,
 	}
 }

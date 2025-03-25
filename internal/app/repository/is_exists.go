@@ -13,7 +13,7 @@ func (r *UserRepository) isExists(u *users.User, ctx context.Context) bool {
 	}
 
 	query := fmt.Sprintf("SELECT COUNT(*) FROM users WHERE id = %d", u.ID)
-	rows, err := r.db.Query(ctx, query)
+	rows, err := r.conn.Query(ctx, query)
 	if err != nil || !rows.Next() {
 		return false
 	}

@@ -35,7 +35,7 @@ func (r *UserRepository) updateEmail(u *users.User, ctx context.Context) error {
 	}
 
 	query := fmt.Sprintf("UPDATE users SET email = '%s' WHERE id = %d", u.Email, u.ID)
-	_, err := r.db.Query(ctx, query)
+	_, err := r.conn.Query(ctx, query)
 	if err != nil {
 		return fmt.Errorf("error updating user email: %v", err)
 	}
@@ -49,7 +49,7 @@ func (r *UserRepository) updatePassword(u *users.User, ctx context.Context) erro
 	}
 
 	query := fmt.Sprintf("UPDATE users SET password = '%s' WHERE id = %d", u.Password, u.ID)
-	_, err := r.db.Query(ctx, query)
+	_, err := r.conn.Query(ctx, query)
 	if err != nil {
 		return fmt.Errorf("error updating user password: %v", err)
 	}
