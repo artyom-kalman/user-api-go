@@ -33,8 +33,8 @@ user-api-go/
 **Тело запроса:**
 ```json
 {
-  "name": "Иван Петров",
   "email": "ivan.petrov@example.com",
+  "password": "password123",
 }
 ```
 
@@ -48,8 +48,8 @@ user-api-go/
 ```json
 {
   "id": 1,
-  "name": "Иван Петров",
   "email": "ivan.petrov@example.com",
+  "password": "new_password",
 }
 ```
 
