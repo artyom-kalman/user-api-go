@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/artyom-kalman/user-api-go/internal/app/users"
+	"github.com/artyom-kalman/user-api-go/pkg/logger"
 )
 
 func (r *UserRepository) Save(u *users.User, ctx context.Context) error {
@@ -12,8 +13,10 @@ func (r *UserRepository) Save(u *users.User, ctx context.Context) error {
 		ctx = context.Background()
 	}
 
-	query := fmt.Sprintf("INSERT INTO users (email, password) VALUES ('%s', '%s') RETURNING id", u.Email, u.Password)
-	rows, err := r.conn.QueryContext(ctx, query)
+	query := "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id"
+	logger.Debug("Running query: %s", query)
+
+	rows, err := r.conn.QueryContext(ctx, query, u.Email, u.Password)
 	if err != nil || !rows.Next() {
 		return fmt.Errorf("error inserting new user: %v", err)
 	}
@@ -22,6 +25,7 @@ func (r *UserRepository) Save(u *users.User, ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("error scanning user ID: %v", err)
 	}
+	logger.Debug("Id of created user: %d", u.ID)
 
 	return nil
 }
